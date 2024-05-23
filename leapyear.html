@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>閏年判定ツール</title>
+    <script>
+        // 半角数字であるかを判定する関数
+        function is_year() {
+            // formからidがyearのタグのvalueを取得する
+            var year = document.getElementById("year").value;
+            // 半角数字を包括する変数を定義する
+            var halfsizenum = /^[0-9]+$/;
+            // yearがすべて半角数字でなければ
+            if (!halfsizenum.test(year)) {
+                // 半角数字を入力するよう促す
+                document.getElementById('result').innerHTML = "<p>半角数字で入力してください</p><br>";
+            } else {
+                // そうでなければ、次の関数を実行する
+                is_in_arange();
+            }
+        }
+        // 指定範囲内の年であるかを判定する関数
+        function is_in_arange() {
+            // formからidがyearのタグのvalueを取得する
+            var year = document.getElementById("year").value;
+            // yearが1900より小さい、または2100より大きいのであれば
+            if (year < 1900 || year > 2100) {
+                // 指定範囲内の年を入力するよう促す
+                document.getElementById('result').innerHTML = "<p>1900年~2100年の範囲内の年を入力してください</p><br>";
+            } else {
+                // そうでなければ、次の関数を実行する
+                leapyearchecker();
+            }
+        }
+        // 閏年であるかを判定する関数
+        function leapyearchecker() {
+            // formからidがyearのタグの属性を取得する
+            var year = document.getElementById("year");
+            // 4で割り切れる且つ100で割り切れない数字である、または400で割り切れる数字であるならば
+            if ((year.value % 4) === 0 && (year.value % 100) !== 0 || (year.value % 400) === 0) {
+                // 閏年であると結果を出力
+                document.getElementById('result').innerHTML = `<p>${year.value}年は閏年です。</p><br>`;
+            }
+            else {
+                // そうでなければ、閏年ではないと結果を出力
+                document.getElementById('result').innerHTML = `<p>${year.value}年は閏年ではありません。</p><br>`;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h2>閏年判定ツール</h2>
+    <form id="year_form" style="width: 50%;">
+        <!-- 入力欄 -->
+        <input type="text" id="year" placeholder="ここに西暦の年を入力してください" style="width: 100%;">
+        <!-- データの送信ボタン -->
+        <button type='button' onclick="is_year()">チェックする</button>
+    </form>
+    <!-- 結果の出力欄 -->
+    <div id="result"></div>
+</body>
+
+</html>
